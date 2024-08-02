@@ -1,3 +1,7 @@
+---
+title: Séquence 2 - TypeScript
+---
+
 # TypeScript (TS)
 
 Points-clés :

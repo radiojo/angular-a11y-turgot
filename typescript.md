@@ -1,6 +1,6 @@
 # TypeScript (TS)
 
-Points clés :
+Points-clés :
 - Surcouche du JavaScript apportant le support des types
 - Le JavaScript est un langage dynamique : on peut accéder à une propriété d'un objet qui n'existe pas sans erreur par exemple, le TypeScript permet d'avoir un code plus sécurisé et maintenable
 - Les erreurs sont détectées avec que le code soit exécuté (_static type checking_)

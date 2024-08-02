@@ -1,0 +1,181 @@
+<h1>TypeScript (TS)</h1>
+<p>Points-clés :</p>
+<ul>
+<li>Surcouche du JavaScript apportant le support des types</li>
+<li>Le JavaScript est un langage dynamique : on peut accéder à une propriété d'un objet qui n'existe pas sans erreur par exemple, le TypeScript permet d'avoir un code plus sécurisé et maintenable</li>
+<li>Les erreurs sont détectées avec que le code soit exécuté (<em>static type checking</em>)</li>
+<li>Du JavaScript est du TypeScript</li>
+<li>Le TypeScript est <strong>transpilé</strong> (transformation d'un langage en un autre) en JavaScript</li>
+</ul>
+<h2>Rappels</h2>
+<h3>Types de variables</h3>
+<h4>Les variables avec <code>let</code></h4>
+<p>Le mot-clé <code>let</code> permet de créer une variable mutable, qui peut changer de valeur.</p>
+<pre><code class="language-ts">let variable = 'quelque chose';
+</code></pre>
+<h4>Les constantes avec <code>const</code></h4>
+<p>Le mot-clé <code>const</code> permet de créer une constante, qui ne peut pas changer de valeur une fois définie.</p>
+<pre><code class="language-ts">const variable = 'quelque chose';
+variable = 'autre chose'; // Cannot assign to variable because it is a constant.
+</code></pre>
+<p>Par contre, les attributs d'un objet stocké dans une constante peuvent être modifiés.</p>
+<pre><code class="language-ts">const variable = {
+  unAttribut: 'quelque chose'
+};
+
+variable.unAttribut = 'autre chose';
+</code></pre>
+<h2>Types primitifs</h2>
+<h3>Chaînes de caractères</h3>
+<p>Type <code>string</code></p>
+<pre><code class="language-ts">let maChaine: string = 'Les produits laitiers sont nos amis pour la vie';
+</code></pre>
+<h3>Nombres</h3>
+<p>Type <code>number</code></p>
+<pre><code class="language-ts">let monNombre: number = 56;
+let monAutreNombre: number = 3.56;
+</code></pre>
+<h3>Booléens</h3>
+<p>Type <code>boolean</code></p>
+<pre><code class="language-ts">let monBooleen: boolean = false;
+</code></pre>
+<h3>Les tableaux</h3>
+<p>Type <code>&lt;type&gt;[]</code> ou <code>Array&lt;type&gt;</code> (<code>string[]</code> ou <code>Array&lt;string&gt;</code> par exemple)</p>
+<pre><code class="language-ts">let tableauDeChaines: string[] = ['Les', 'produits', 'laitiers'];
+let tableauDeNombres: number[] = [1, 2, 3];
+let tableauDeBooleens: boolean[] = [true, false, true];
+</code></pre>
+<h3>Le type du mal, <code>any</code></h3>
+<p>Si je veux que ma variable ou ma constante puisse contenir n'importe quel type, je peux utiliser <code>any</code>.
+Ainsi je peux écrire ce code sans aucune erreur :</p>
+<pre><code class="language-ts">let monNombre: any = 56;
+monNombre.maFonction();
+</code></pre>
+<ul>
+<li>Je peux donc exécuter une fonction sur ma variable <code>monNombre</code> qui n'en contient pas.</li>
+<li>Le code échouera à l'exécution mais pas à la transpilation.</li>
+<li><code>any</code> dit au compilateur de ne pas effectuer de vérifications particulières pour la variable</li>
+</ul>
+<h3>Le type <code>undefined</code></h3>
+<p><code>undefined</code> est la valeur d'une variable non initialisée.</p>
+<pre><code class="language-ts">let monNombre: number;
+console.log(monNombre); // Error: Variable 'z' is used before being assigned
+</code></pre>
+<h3>Le type <code>null</code></h3>
+<p><code>null</code> signifie &quot;sans valeur&quot;.</p>
+<pre><code class="language-ts">let monNombre: number | null = null;
+console.log(monNombre); // null
+</code></pre>
+<h3>Le type <code>unknown</code></h3>
+<p><code>unknown</code> signifie que l'on connaît pas le type. <code>unknown</code> est différent de <code>any</code> puisque TypeScript se chergera de faire des
+vérifications.</p>
+<pre><code class="language-ts">function uneFonctionAvecAny(uneVariableAny: any) {
+    uneVariableAvecAny.methode(); // OK
+}
+
+function uneFonctionAvecUnknown(uneVariableUnknown: unknown) {
+    uneVariableUnknown.methode(); // 'uneVariableUnknown' is of type 'unknown'.
+}
+</code></pre>
+<p>Dans la fonction <code>uneFonctionAvecUnknown</code>, je ne peux pas appeler la fonction <code>methode()</code> de la variable <code>uneVariableUnknown</code> qui est de type <code>unknown</code>.</p>
+<h3>Le type <code>void</code></h3>
+<p>Utilisé pour indiquer qu'une fonction ne retourne pas de valeur.</p>
+<pre><code class="language-ts">function uneFonction() {
+   return;
+}
+
+function uneFonction() {
+    quelqueChose();
+}
+</code></pre>
+<h3>Le type <code>never</code></h3>
+<pre><code class="language-ts">function lanceUneErreur(message: string): never {
+  throw new Error(msg);
+}
+</code></pre>
+<p>La fonction <code>lanceUneErreur</code> jette une exception, la fonction est donc arrêtée et donc ne retourne rien.</p>
+<h2>Inférence de types</h2>
+<p>Capacité de TypeScript à déduire le type d'une variable grâce à sa valeur.</p>
+<pre><code class="language-ts">let maVariable = 78; // number
+let monAutreVariable = &quot;Les produits laitiers sont nos amis pour la vie&quot; // string
+let encoreUneAutreVariable = false // boolean
+</code></pre>
+<h2>Les unions et intersections</h2>
+<h3>Les unions</h3>
+<p>Permet de créer des variables ou des fonctions qui contiennent ou retournent un type parmi un ensemble de types (représente donc un <strong>ou</strong>).</p>
+<pre><code class="language-ts">let uneVariable: number | string;
+uneVariable = 67;         // OK
+uneVariable = &quot;Salut !&quot;;    // OK
+</code></pre>
+<ul>
+<li><code>maVariable</code> peut contenir un nombre ou une chaîne de caractères.</li>
+<li>Pour créer une intersection, on utilise l'opérateur | (<em>pipe</em>)</li>
+</ul>
+<h3>Les intersections</h3>
+<pre><code class="language-ts">type MonIntersection = { unePropriete: string } &amp; { uneAutrePropriete: string };
+
+let maVariable: MonIntersection = {
+    unePropriete: 'Du texte',
+    uneAutrePropriete: 'Encore du texte'
+}
+</code></pre>
+<h2>L'assertion de type</h2>
+<p>Le mot-clé <code>as</code> permet de faire de l'assertion de type, de dire au compilateur TypeScript qu'une valeur doit être considérée comme étant d'un type spécifique.</p>
+<pre><code class="language-ts">let uneVariable: any = &quot;this is a string&quot;;
+let longueurDeLaChaine: number = (uneVariable as string).length;
+</code></pre>
+<ul>
+<li>La variable <code>uneVariable</code> est de type <code>any</code>, elle peut donc contenir n'importe quel type de valeur</li>
+<li>La variable <code>longueurDeLaChaine</code> est un nombre contenant la longueur de la chaîne stockée dans la variable <code>uneVariable</code></li>
+<li>L'attribut <code>length</code> existant seulement sur le type <code>string</code>, on utilise <code>as</code> pour dire au compilateur que la variable <code>uneVariable</code> doit être considérée comme de type <code>string</code> permettant ainsi de pouvoir accéder à l'attribut <code>length</code></li>
+</ul>
+<p>Je ne peux pas tout faire avec as : je ne peux pas transformer une chèvre en un torchon.</p>
+<pre><code class="language-ts">const uneConstante = &quot;Salut !&quot; as number; // Conversion of type 'string' to type 'number' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+</code></pre>
+<p>Une chaîne de caractères ne pouvant être considérée comme un nombre, je ne peux pas utiliser <code>as</code> dans ce cas.</p>
+<p>Je ne peux utiliser as que dans le cas de types qui se superposent, qui partagent certains attributs en commun.</p>
+<pre><code class="language-ts">type UnType = { unAttribut: string };
+type UnAutreType = { unAutreAttribut: string };
+
+const uneConstante = UnType as UnAutreType
+</code></pre>
+<h2>Types littéraux</h2>
+<pre><code class="language-ts">let variable: 'Salut'
+</code></pre>
+<h2>Interfaces</h2>
+<p>Une interface est un contrat que doit respecter un objet.</p>
+<pre><code class="language-ts">interface Chien {
+  nom: string;
+  age: number;
+}
+
+let monChien: Chien = {
+   nom: 'Scooby-Doo',
+   age: 34
+}
+</code></pre>
+<h3>Héritage des interfaces</h3>
+<p>Une interface peut hériter de d'autres interfaces.</p>
+<pre><code class="language-ts">interface Mammifere {
+  race: string;
+}
+
+interface Chien extends Mammifere {
+    nom: string;
+    age: number;
+}
+
+let monChien: Chien = {
+    nom: 'Scooby-Doo',
+    age: 34,
+    race: 'Canidé'
+}
+</code></pre>
+<ul>
+<li>L'interface <code>Mammifere</code> a un attribut <code>race</code>.</li>
+<li>L'interface <code>Chien</code> étend l'interface <code>Mammifere</code>, reprenant donc ses attributs</li>
+<li>Un objet de type <code>Chien</code> doit donc implémenter tous les attributs, ceux de l'interface <code>Chien</code> et <code>Mammifere</code></li>
+</ul>
+<h2>Classes</h2>
+<h3>Héritage des classes</h3>
+<h2>Énumérations</h2>
